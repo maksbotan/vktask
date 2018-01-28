@@ -41,6 +41,13 @@ if (!file_exists($src_file)) {
     die();
 }
 
+$mysqli = mysqli_connect('mysql', 'vk', '6IK4l', 'vktask');
+
+if (!$mysqli) {
+    http_response_code(500);
+    die();
+}
+
 $result = include $src_file;
 
 if (!$result) {

@@ -21,3 +21,14 @@ Task
 - Проект должен быть на гитхабе и отражать процесс разработки.
 
 В результате — ссылка на гитхаб и развёрнутое демо.
+
+Creating a DB
+=============
+
+To create the database first run the whole stack with
+
+`docker-compose up`
+
+and then do
+
+`docker exec -it --entrypoint php -v $(pwd)/backend/init_db.php:/init_db.php vktask_php_1 /init_db.php`
