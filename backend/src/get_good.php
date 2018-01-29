@@ -21,5 +21,5 @@ if (!($data = mysqli_fetch_assoc($result))) {
     die();
 }
 
-echo(json_encode($data));
+echo(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 ?>
