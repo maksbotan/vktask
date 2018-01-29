@@ -14,7 +14,8 @@ $path = $_SERVER['PATH_INFO'];
 
 // Route format: [method, regex, file_name]
 $routes = [
-    ['GET', '|^/api/good/(\d+)|', 'get_good']
+    ['GET', '|^/api/good/(\d+)|', 'get_good'],
+    ['POST', '|^/api/good/new|', 'add_good'],
 ];
 
 $has_route = false;
