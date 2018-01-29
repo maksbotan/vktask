@@ -6,13 +6,17 @@ $query = mysqli_prepare($mysqli,
     'SELECT * FROM Goods WHERE id = ?'
 );
 mysqli_stmt_bind_param($query, 'i', $good_id);
-mysqli_stmt_execute($query);
-$result = mysqli_stmt_get_result($query);
+if (!mysqli_stmt_execute($query)) {
+    http_response_code(500);
+    die();
+}
 
-// TODO check errors
+if (!($result = mysqli_stmt_get_result($query))) {
+    http_response_code(500);
+    die();
+}
 
-$data = mysqli_fetch_assoc($result);
-if (!$data) {
+if (!($data = mysqli_fetch_assoc($result))) {
     http_response_code(404);
     die();
 }
