@@ -16,6 +16,7 @@ $path = $_SERVER['PATH_INFO'];
 $routes = [
     ['GET', '|^/api/good/(\d+)|', 'get_good'],
     ['POST', '|^/api/good/new|', 'add_good'],
+    ['GET', '@^/api/goods/(byid|byprice)@', 'get_goods'],
 ];
 
 $has_route = false;
