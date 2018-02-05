@@ -36,6 +36,8 @@ $inner_sql = 'SELECT id FROM Goods';
 
 if ($mode === 'byprice') {
     $inner_sql .= ' ORDER BY price ASC';
+} else {
+    $inner_sql .= ' ORDER BY id ASC';
 }
 
 $inner_sql .= ' LIMIT ? OFFSET ?';
