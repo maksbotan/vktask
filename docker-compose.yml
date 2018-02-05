@@ -20,5 +20,7 @@ services:
             - MYSQL_DATABASE=vktask
             - MYSQL_USER=vk
             - MYSQL_PASSWORD=6IK4l
+    memcached:
+        image: memcached:1.5-alpine
 volumes:
     mysqldata:

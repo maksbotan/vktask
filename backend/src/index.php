@@ -14,6 +14,7 @@ $path = $_SERVER['PATH_INFO'];
 
 // Route format: [method, regex, file_name]
 $routes = [
+    ['POST', '|^/api/login|', 'login'],
     ['GET', '|^/api/good/(\d+)|', 'get_good'],
     ['POST', '|^/api/good/new|', 'add_good'],
     ['GET', '@^/api/goods/(byid|byprice)@', 'get_goods'],
@@ -40,6 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] !== $route[0]) {
 $src_file = $route[2] . '.php';
 if (!file_exists($src_file)) {
     http_response_code(500); // Internal server error
+    die();
+}
+
+// Have to use old 'memcache' extension, because PECL 'memcached' extenstion wants PHP 7...
+$memcache = memcache_connect('memcached', 11211);
+if (!$memcache) {
+    http_response_code(500);
     die();
 }
 

@@ -35,4 +35,17 @@ $res = mysqli_query($mysqli,
 if (!$res) {
     die(mysqli_error($mysqli));
 }
+
+$res = mysqli_query($mysqli,
+    'CREATE TABLE Users (' .
+    '   id int auto_increment primary key,' .
+    '   username VARCHAR(255) NOT NULL,' .
+    '   password_hash VARCHAR(255) NOT NULL,' .
+    '   UNIQUE (username)'
+    ')'
+);
+
+if (!$res) {
+    die(mysqli_error($mysqli));
+}
 ?>
