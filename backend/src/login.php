@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This view accepts username and password in JSON and lets user log in, storing tokin in Memcached
+ * This view accepts username and password in JSON and lets user log in, storing token in Memcached
  */
 
 $data = json_decode(file_get_contents('php://input'), true);
@@ -41,6 +41,9 @@ if (!password_verify($data['password'], $db_data['password_hash'])) {
 }
 
 $token = uuid_create();
+
+// Store token in memcached for 10 days
+memcache_set($memcache, "token:$token", $data['username'], 0, 10*24*60*60);
 
 echo(json_encode(['ok' => true, 'token' => $token]));
 ?>

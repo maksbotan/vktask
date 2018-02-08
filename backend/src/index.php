@@ -51,6 +51,34 @@ if (!$memcache) {
     die();
 }
 
+$username = null;
+if ($route[2] !== 'login') {
+    // We implement a very simple token-based auth
+    // Client must provide HTTP 'Authorization:' header with value 'Token XXXXXX'
+    // Token is then looked up in memcached. If it is missing, we return HTTP 401
+    // Could have used JWT tokens to avoid lookup per each request, but should be good for demo anyway.
+
+    if (!array_key_exists('HTTP_AUTHORIZATION', $_SERVER)) {
+        header('WWW-Authenticate: Token');
+        http_response_code(401); // Not authorized
+        die();
+    }
+    $header = explode(' ', $_SERVER['HTTP_AUTHORIZATION']);
+    if (count($header) !== 2 || $header[0] !== 'Token') {
+        header('WWW-Authenticate: Token');
+        http_response_code(401); // Not authorized
+        die();
+    }
+
+    $username = memcache_get($memcache, "token:$header[1]");
+    if (!$username) {
+        // If token is not found in memcached, return error
+        header('WWW-Authenticate: Token');
+        http_response_code(401); // Not authorized
+        die();
+    }
+}
+
 $mysqli = mysqli_connect('mysql', 'vk', '6IK4l', 'vktask');
 
 if (!$mysqli) {
