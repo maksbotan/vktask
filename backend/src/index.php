@@ -86,6 +86,8 @@ if (!$mysqli) {
     die();
 }
 
+header('Content-Type: application/json');
+
 $result = include $src_file;
 
 if (!$result) {
