@@ -1,5 +1,8 @@
 <template>
     <div>
+        <button @click.prevent="byPrice = !byPrice">
+            {{ byPrice ? 'Sort by id' : 'Sort by price' }}
+        </button>
         <table>
             <tr>
                 <th>#</th>
