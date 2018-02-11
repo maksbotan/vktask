@@ -32,6 +32,17 @@ if (array_key_exists('offset', $_GET)) {
     $offset = $_GET['offset'] + 0;
 }
 
+include '_cache_utils.php';
+
+if ($count === 20) {
+    // We cache only standard pages of 20 items
+    $page = get_cache_page($memcache, $mode, $offset);
+    if ($page) {
+        echo(json_encode($page, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        return;
+    }
+}
+
 $inner_sql = 'SELECT id FROM Goods';
 
 if ($mode === 'byprice') {
@@ -61,6 +72,10 @@ if (!($result = mysqli_stmt_get_result($query))) {
 $goods = [];
 while ($data = mysqli_fetch_assoc($result)) {
     $goods[] = $data;
+}
+
+if ($count === 20) {
+    cache_page($memcache, $goods, $mode, $offset);
 }
 
 echo(json_encode($goods, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

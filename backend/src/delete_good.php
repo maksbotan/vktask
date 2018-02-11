@@ -6,6 +6,8 @@
 
 $good_id = $matches[1];
 
+include '_cache_utils.php';
+
 $query = mysqli_prepare($mysqli,
     'DELETE FROM Goods WHERE id = ?'
 );
@@ -16,6 +18,10 @@ if (!mysqli_stmt_execute($query)) {
 }
 
 $rows = mysqli_affected_rows($mysqli);
+if ($rows > 0) {
+    // Let's just flush whole by price cache unconditionally instead of fetching the price from MySQL
+    invalidate_cache($memcache, $good_id, 0);
+}
 
 echo(json_encode([
     "ok" => true,

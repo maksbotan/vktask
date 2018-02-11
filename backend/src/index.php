@@ -53,7 +53,8 @@ if (!file_exists($src_file)) {
 }
 
 // Have to use old 'memcache' extension, because PECL 'memcached' extenstion wants PHP 7...
-$memcache = memcache_connect('memcached', 11211);
+// Use persistent connection to avoid reconnecting on each request
+$memcache = memcache_pconnect('memcached', 11211);
 if (!$memcache) {
     http_response_code(500);
     die();

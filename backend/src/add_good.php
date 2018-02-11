@@ -49,6 +49,8 @@ if (array_key_exists('pic_url', $data)) {
     $pic_url = $data['pic_url'];
 }
 
+include '_cache_utils.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $query = mysqli_prepare($mysqli,
         'INSERT INTO Goods (name, price, description, pic_url) VALUES (?, ?, ?, ?)'
@@ -60,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $id = mysqli_insert_id($mysqli);
+
+    invalidate_cache($memcache, $id, $data['price']);
 
     echo(json_encode(["ok" => true, "id" => $id]));
 }
@@ -78,6 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         http_response_code(500);
         die();
     }
+
+    invalidate_cache($memcache, $id, $data['price']);
 
     echo(json_encode(["ok" => true, "updated" => mysqli_affected_rows($mysqli) > 0]));
 }
