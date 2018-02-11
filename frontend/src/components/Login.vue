@@ -41,6 +41,8 @@ export default {
             const token = result.token
             axios.defaults.headers.common['Authorization'] = 'Token ' + token;
             localStorage.setItem('vktask-auth-token', token)
+
+            this.$emit('logged-in')
         }
     }
 }
