@@ -1,10 +1,17 @@
 <template>
   <div id="app">
     <login v-if="state === 'auth'" @logged-in="state = 'list'"/>
-    <goods-list v-if="state === 'list'" @clicked="select"/>
+    <goods-list v-if="state === 'list'"
+                @clicked="select"
+                @edit="(goodID) => { selectedGoodID = goodID; state = 'add-or-edit'}"
+    />
     <good v-if="state === 'good'"
           :goodID="selectedGoodID"
           @go-back="state = 'list'; selectedGoodID = null"
+    />
+    <add-or-edit v-if="state === 'add-or-edit'"
+                 :existingGoodID="selectedGoodID"
+                 @go-back="state = 'list'; selectedGoodID = null"
     />
   </div>
 </template>
@@ -14,11 +21,12 @@ import axios from 'axios'
 import Login from './components/Login'
 import GoodsList from './components/GoodsList'
 import Good from './components/Good'
+import AddOrEdit from './components/AddOrEdit'
 
 export default {
     name: 'app',
 
-    components: {Login, GoodsList, Good},
+    components: {Login, GoodsList, Good, AddOrEdit},
 
     data () {
         return {
