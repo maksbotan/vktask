@@ -4,14 +4,17 @@
     <goods-list v-if="state === 'list'"
                 @clicked="select"
                 @edit="(goodID) => { selectedGoodID = goodID; state = 'add-or-edit'}"
+                @create-new="selectedGoodID = null; state='add-or-edit'"
     />
     <good v-if="state === 'good'"
           :goodID="selectedGoodID"
           @go-back="state = 'list'; selectedGoodID = null"
+          @edit="state = 'add-or-edit'"
     />
     <add-or-edit v-if="state === 'add-or-edit'"
                  :existingGoodID="selectedGoodID"
                  @go-back="state = 'list'; selectedGoodID = null"
+                 @done="editingDone"
     />
   </div>
 </template>
@@ -52,9 +55,18 @@ export default {
         select (goodID) {
             this.selectedGoodID = goodID
             this.state = 'good'
+        },
+
+        editingDone (goodID) {
+            if (goodID) {
+                this.selectedGoodID = goodID
+                this.state = 'good'
+            } else {
+                this.selectedGoodID = null
+                this.state = 'list'
+            }
         }
     }
-
 }
 </script>
 

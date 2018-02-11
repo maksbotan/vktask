@@ -4,6 +4,7 @@
            @click.prevent="$emit('go-back')">
             Go back
         </a>
+        <button @click.prevent="$emit('edit')">Edit</button>
         <div v-if="good">
             <h1>{{ good.name }}</h1>
             <p>{{ good.description }}</p>

@@ -12,8 +12,8 @@
         <p>Price: <input type="number" min="1" v-model.number="good.price"/></p>
         <p>Picture url: <input type="text" v-model="good.pic_url"/></p>
 
-        <button type="button">Save</button>
-        <button type="button">Remove</button>
+        <button type="button" @click.prevent="save">Save</button>
+        <button type="button" v-if="existingGoodID" @click.prevent="remove">Remove</button>
     </div>
 </template>
 <script>
@@ -47,8 +47,32 @@ export default {
 
         const { data } = await axios.get(`/api/good/${this.existingGoodID}`)
         this.good = data
-    }
+    },
 
+    methods: {
+        async save () {
+            let resultID = this.existingGoodID
+
+            if (!this.existingGoodID) {
+                const { data } = await axios.post('/api/good/new', this.good)
+                resultID = data.id
+            } else {
+                await axios.put(`/api/good/${this.existingGoodID}`, this.good)
+            }
+
+            this.$emit('done', resultID)
+        },
+
+        async remove () {
+            if (!this.existingGoodID) {
+                return
+            }
+
+            await axios.delete(`/api/good/${this.existingGoodID}`)
+
+            this.$emit('done', null)
+        }
+    }
 }
 </script>
 

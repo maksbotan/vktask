@@ -3,6 +3,7 @@
         <button @click.prevent="byPrice = !byPrice">
             {{ byPrice ? 'Sort by id' : 'Sort by price' }}
         </button>
+        <button @click.prevent="$emit('create-new')">Create new good</button>
         <table>
             <tr>
                 <th>#</th>
