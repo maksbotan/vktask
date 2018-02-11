@@ -48,4 +48,13 @@ $res = mysqli_query($mysqli,
 if (!$res) {
     die(mysqli_error($mysqli));
 }
+
+$hash = password_hash('46EpOt', PASSWORD_DEFAULT);
+$res = mysqli_query($mysqli,
+    'INSERT INTO Users (username, password_hash) VALUES ("maks", "' . $hash . '")'
+);
+
+if (!$res) {
+    die(mysqli_error($mysqli));
+}
 ?>

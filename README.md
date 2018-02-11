@@ -55,6 +55,14 @@ and then do
 
 `docker-compose run --rm --entrypoint php -v $(pwd)/backend/init_db.php:/init_db.php php /init_db.php`
 
+A user with login "`maks`" and password "`46EpOt`" is created by this script as well.
+
+Populating DB with fake data
+----------------------------
+
+Fake data is created with python script `gen_db.py`. IP, port and password of MySQL server is hardcoded in
+the script.
+
 API
 ===
 
