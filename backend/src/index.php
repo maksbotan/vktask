@@ -14,12 +14,12 @@ $path = $_SERVER['PATH_INFO'];
 
 // Route format: [method, regex, file_name]
 $routes = [
+    ['GET', '@^/api/goods/(byid|byprice)@', 'get_goods'],
     ['POST', '|^/api/login|', 'login'],
     ['GET', '|^/api/good/(\d+)|', 'get_good'],
     ['DELETE', '|^/api/good/(\d+)|', 'delete_good'],
     ['POST', '|^/api/good/new|', 'add_good'],
     ['PUT', '|^/api/good/(\d+)|', 'add_good'],
-    ['GET', '@^/api/goods/(byid|byprice)@', 'get_goods'],
 ];
 
 $seen_route = false;
