@@ -49,16 +49,36 @@ if (array_key_exists('pic_url', $data)) {
     $pic_url = $data['pic_url'];
 }
 
-$query = mysqli_prepare($mysqli,
-    'INSERT INTO Goods (name, price, description, pic_url) VALUES (?, ?, ?, ?)'
-);
-mysqli_stmt_bind_param($query, 'siss', $data['name'], $data['price'], $description, $pic_url);
-if (!mysqli_stmt_execute($query)) {
-    http_response_code(500);
-    die();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $query = mysqli_prepare($mysqli,
+        'INSERT INTO Goods (name, price, description, pic_url) VALUES (?, ?, ?, ?)'
+    );
+    mysqli_stmt_bind_param($query, 'siss', $data['name'], $data['price'], $description, $pic_url);
+    if (!mysqli_stmt_execute($query)) {
+        http_response_code(500);
+        die();
+    }
+
+    $id = mysqli_insert_id($mysqli);
+
+    echo(json_encode(["ok" => true, "id" => $id]));
 }
 
-$id = mysqli_insert_id($mysqli);
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    $id = $matches[1];
 
-echo(json_encode(["ok" => true, "id" => $id]));
+    $query = mysqli_prepare($mysqli,
+        'UPDATE Goods SET name = ?, price = ?, description = ?, pic_url = ? WHERE id = ?'
+    );
+    mysqli_stmt_bind_param($query, 'sissi',
+        $data['name'], $data['price'], $description, $pic_url,
+        $id
+    );
+    if (!mysqli_stmt_execute($query)) {
+        http_response_code(500);
+        die();
+    }
+
+    echo(json_encode(["ok" => true, "updated" => mysqli_affected_rows($mysqli) > 0]));
+}
 ?>

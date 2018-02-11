@@ -18,6 +18,7 @@ $routes = [
     ['GET', '|^/api/good/(\d+)|', 'get_good'],
     ['DELETE', '|^/api/good/(\d+)|', 'delete_good'],
     ['POST', '|^/api/good/new|', 'add_good'],
+    ['PUT', '|^/api/good/(\d+)|', 'add_good'],
     ['GET', '@^/api/goods/(byid|byprice)@', 'get_goods'],
 ];
 
