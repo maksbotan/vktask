@@ -38,6 +38,22 @@ export default {
         }
     },
 
+    created () {
+        axios.interceptors.response.use(r => r, error => {
+            if (error.response.status === 401) {
+                // If unauthorized, reset page to login form
+                // And pop token from local storage
+                this.state = 'auth'
+                localStorage.removeItem('vktask-auth-token')
+
+                return Promise.reject('unauthorized')
+            } else {
+                console.log(error)
+                return Promise.reject(error)
+            }
+        })
+    },
+
     async mounted () {
         // We will store auth token in localStorage
         // If it's not present there, show simple login form

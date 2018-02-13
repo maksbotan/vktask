@@ -4,6 +4,7 @@
         <p>Username: <input type="text" v-model="username"/></p>
         <p>Password: <input type="password" v-model="password"/></p>
 
+        <p v-if="error">Login error occured!</p>
         <p><button type="button" @click.prevent="login">Login</button></p>
     </div>
 </template>
@@ -16,7 +17,8 @@ export default {
     data () {
         return {
             username: '',
-            password: ''
+            password: '',
+            error: null
         }
     },
 
@@ -35,6 +37,7 @@ export default {
                 result = data
             } catch (err) {
                 console.log(err)
+                this.error = true
                 return
             }
 
